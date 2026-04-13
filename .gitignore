@@ -1,0 +1,26 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+target
+*.class
+
+*.log
+.settings
+.project
+logs
+job
+
+# 敏感配置文件
+**/bootstrap.yml
+**/bootstrap-dev.yml
+**/bootstrap-test.yml
+**/bootstrap-prod.yml
+
+# 证书文件
+**/*.jks
