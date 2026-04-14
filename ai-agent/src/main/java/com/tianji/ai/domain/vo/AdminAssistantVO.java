@@ -10,4 +10,5 @@ public class AdminAssistantVO {
     private List<String> trendAnalysis;
     private String questionAnswer;
     private List<String> suggestions;
+    private String response;
 }

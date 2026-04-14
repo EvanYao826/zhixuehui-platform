@@ -23,8 +23,8 @@ spring:
   # AI配置
   ai:
     openai:
-      api-key: ${OPENAI_API_KEY}
-      base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+      api-key: ${OPENAI_API_KEY}  # 千问API密钥
+      base-url: ${OPENAI_BASE_URL:https://ark.cn-beijing.volces.com/api/v3}  # 千问API地址
   # Elasticsearch配置
   elasticsearch:
     uris: ${ELASTICSEARCH_URIS:http://localhost:9200}

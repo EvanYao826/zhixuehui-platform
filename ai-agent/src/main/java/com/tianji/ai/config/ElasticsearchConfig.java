@@ -2,9 +2,8 @@ package com.tianji.ai.config;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder; // 1. 添加此导入
 import org.elasticsearch.client.RestHighLevelClient;
-import org.springframework.ai.embedding.EmbeddingClient;
-import org.springframework.ai.elasticsearch.ElasticsearchDocumentStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,50 +14,18 @@ public class ElasticsearchConfig {
     @Value("${spring.elasticsearch.uris:http://localhost:9200}")
     private String elasticsearchUris;
 
-    @Value("${spring.elasticsearch.username:}")
-    private String username;
-
-    @Value("${spring.elasticsearch.password:}")
-    private String password;
-
-    @Value("${spring.elasticsearch.index:ai-embeddings}")
-    private String indexName;
-
     @Bean
     public RestHighLevelClient restHighLevelClient() {
-        HttpHost[] hosts = elasticsearchUris.split(",")
-                .stream()
-                .map(HttpHost::create)
-                .toArray(HttpHost[]::new);
-
-        RestClient.Builder builder = RestClient.builder(hosts);
-        
-        if (!username.isEmpty() && !password.isEmpty()) {
-            builder.setHttpClientConfigCallback(httpClientBuilder -> 
-                httpClientBuilder.setDefaultCredentialsProvider(
-                    new org.apache.http.impl.client.BasicCredentialsProvider() {
-                        {
-                            setCredentials(
-                                org.apache.http.auth.AuthScope.ANY,
-                                new org.apache.http.auth.UsernamePasswordCredentials(username, password)
-                            );
-                        }
-                    }
-                )
-            );
+        String[] uriArray = elasticsearchUris.split(",");
+        HttpHost[] hosts = new HttpHost[uriArray.length];
+        for (int i = 0; i < uriArray.length; i++) {
+            // 注意：HttpHost.create 是 ES 7.x+ 的方法，如果是旧版本可能需要 new HttpHost(...)
+            hosts[i] = HttpHost.create(uriArray[i].trim()); // 建议 trim 去除空格
         }
 
-        return new RestHighLevelClient(builder);
-    }
+        // 2. 修改类型为 RestClientBuilder
+        RestClientBuilder builder = RestClient.builder(hosts);
 
-    @Bean
-    public ElasticsearchDocumentStore elasticsearchDocumentStore(
-            RestHighLevelClient restHighLevelClient,
-            EmbeddingClient embeddingClient) {
-        return new ElasticsearchDocumentStore(
-                restHighLevelClient,
-                embeddingClient,
-                indexName
-        );
+        return new RestHighLevelClient(builder);
     }
 }

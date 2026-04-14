@@ -7,6 +7,7 @@ import java.util.List;
 @Data
 public class CourseRecommendationVO {
     private List<RecommendedCourse> courses;
+    private String response;
 
     @Data
     public static class RecommendedCourse {
