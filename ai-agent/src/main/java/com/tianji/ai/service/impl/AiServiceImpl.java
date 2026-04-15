@@ -1,7 +1,7 @@
 package com.tianji.ai.service.impl;
 
 import com.tianji.ai.domain.dto.AdminAssistantDTO;
-import com.tianji.ai.domain.dto.CourseRecommendationDTO;
+import com.tianji.api.dto.ai.CourseRecommendationDTO;
 import com.tianji.ai.domain.vo.AdminAssistantVO;
 import com.tianji.ai.domain.vo.CourseRecommendationVO;
 import com.tianji.ai.service.IAiService;

@@ -1,7 +1,10 @@
 package com.tianji.user.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tianji.api.client.ai.AiClient;
 import com.tianji.api.client.trade.TradeClient;
+import com.tianji.api.dto.ai.CourseRecommendationDTO;
+import com.tianji.common.domain.R;
 import com.tianji.common.domain.dto.PageDTO;
 import com.tianji.common.enums.UserType;
 import com.tianji.common.utils.BeanUtils;
@@ -40,6 +43,7 @@ public class StudentServiceImpl implements IStudentService {
     private final IUserService userService;
     private final IUserDetailService detailService;
     private final TradeClient tradeClient;
+    private final AiClient aiClient;
 
     @Override
     @Transactional
@@ -87,5 +91,40 @@ public class StudentServiceImpl implements IStudentService {
             v.setCourseAmount(numMap.get(r.getId()));
         }
         return new PageDTO<>(page.getTotal(), page.getPages(), list);
+    }
+
+    @Override
+    public Object getUserProfile(Long userId) {
+        // 模拟获取用户画像，实际应该从ai_user_profile表查询
+        // 这里暂时返回模拟数据
+        Map<String, Object> profile = new java.util.HashMap<>();
+        profile.put("userId", userId);
+        profile.put("learningHistory", List.of("Java基础", "Spring Boot", "数据库原理"));
+        profile.put("interestTags", List.of("编程", "后端开发", "云计算"));
+        profile.put("learningGoal", "成为全栈工程师");
+        return profile;
+    }
+
+    @Override
+    public Object getCourseRecommendation(Long userId) {
+        // 1.获取用户画像
+        Map<String, Object> profile = (Map<String, Object>) getUserProfile(userId);
+        
+        // 2.构建课程推荐请求
+        CourseRecommendationDTO dto = new CourseRecommendationDTO();
+        dto.setLearningHistory((List<String>) profile.get("learningHistory"));
+        dto.setInterestTags((List<String>) profile.get("interestTags"));
+        dto.setLearningGoal((String) profile.get("learningGoal"));
+        
+        // 3.调用AI服务获取推荐
+        R<?> result = aiClient.getCourseRecommendation(dto);
+        return result.getData();
+    }
+
+    @Override
+    public Object vectorSimilaritySearch(String query) {
+        // 调用AI服务进行向量相似度搜索
+        R<?> result = aiClient.vectorSimilaritySearch(query);
+        return result.getData();
     }
 }

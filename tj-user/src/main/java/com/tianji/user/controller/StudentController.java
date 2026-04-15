@@ -1,6 +1,7 @@
 package com.tianji.user.controller;
 
 
+import com.tianji.common.domain.R;
 import com.tianji.common.domain.dto.PageDTO;
 import com.tianji.user.domain.dto.StudentFormDTO;
 import com.tianji.user.domain.query.UserPageQuery;
@@ -43,5 +44,23 @@ public class StudentController {
     @PutMapping("/password")
     public void updateMyPassword(@RequestBody StudentFormDTO studentFormDTO) {
         studentService.updateMyPassword(studentFormDTO);
+    }
+
+    @ApiOperation("获取用户画像")
+    @GetMapping("/profile")
+    public R<?> getUserProfile(@RequestParam Long userId) {
+        return R.ok(studentService.getUserProfile(userId));
+    }
+
+    @ApiOperation("获取课程推荐")
+    @PostMapping("/course/recommendation")
+    public R<?> getCourseRecommendation(@RequestParam Long userId) {
+        return R.ok(studentService.getCourseRecommendation(userId));
+    }
+
+    @ApiOperation("向量相似度搜索")
+    @GetMapping("/vector/search")
+    public R<?> vectorSimilaritySearch(@RequestParam String query) {
+        return R.ok(studentService.vectorSimilaritySearch(query));
     }
 }

@@ -1,5 +1,6 @@
 package com.tianji.api.config;
 
+import com.tianji.api.client.ai.fallback.AiClientFallback;
 import com.tianji.api.client.learning.fallback.LearningClientFallback;
 import com.tianji.api.client.remark.fallback.RemarkClientFallback;
 import com.tianji.api.client.trade.fallback.TradeClientFallback;
@@ -27,6 +28,11 @@ public class FallbackConfig {
     @Bean
     public RemarkClientFallback remarkClientFallback(){
         return new RemarkClientFallback();
+    }
+
+    @Bean
+    public AiClientFallback aiClientFallback(){
+        return new AiClientFallback();
     }
 
 }

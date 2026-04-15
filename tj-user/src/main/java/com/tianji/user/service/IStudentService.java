@@ -20,4 +20,10 @@ public interface IStudentService {
     void updateMyPassword(StudentFormDTO studentFormDTO);
 
     PageDTO<StudentPageVo> queryStudentPage(UserPageQuery pageQuery);
+
+    Object getUserProfile(Long userId);
+
+    Object getCourseRecommendation(Long userId);
+
+    Object vectorSimilaritySearch(String query);
 }
