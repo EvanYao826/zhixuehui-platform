@@ -216,4 +216,19 @@ public class LearningRecordServiceImpl extends ServiceImpl<LearningRecordMapper,
         }
         return true;
     }
+
+    /**
+     * 查询用户所有学习记录
+     * @param userId 用户id
+     * @return 学习记录列表
+     */
+    @Override
+    public List<LearningRecordDTO> queryLearningRecordsByUser(Long userId) {
+        // 1.查询用户所有学习记录
+        List<LearningRecord> records = lambdaQuery()
+                .eq(LearningRecord::getUserId, userId)
+                .list();
+        // 2.转换为DTO列表返回
+        return BeanUtils.copyList(records, LearningRecordDTO.class);
+    }
 }

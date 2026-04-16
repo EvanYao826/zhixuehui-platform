@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * <p>
@@ -54,6 +55,18 @@ public class LearningRecordController {
     public void addLearningRecord(
             @ApiParam(value = "学习记录", required = true) @RequestBody LearningRecordFormDTO recordDto){
         recordService.addLearningRecord(recordDto);
+    }
+
+    /**
+     * 查询用户所有学习记录
+     * @param userId 用户id
+     * @return 学习记录列表
+     */
+    @GetMapping("/user/{userId}")
+    @ApiOperation("查询用户所有学习记录")
+    public List<LearningRecordDTO> queryLearningRecordsByUser(
+            @ApiParam(value = "用户id", example = "1") @PathVariable("userId") Long userId){
+        return recordService.queryLearningRecordsByUser(userId);
     }
 
 }

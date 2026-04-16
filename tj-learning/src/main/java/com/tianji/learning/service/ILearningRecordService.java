@@ -5,6 +5,7 @@ import com.tianji.api.dto.leanring.LearningRecordDTO;
 import com.tianji.learning.domain.dto.LearningRecordFormDTO;
 import com.tianji.learning.domain.po.LearningRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
 
 /**
  * <p>
@@ -19,4 +20,6 @@ public interface ILearningRecordService extends IService<LearningRecord> {
     LearningLessonDTO queryLearningRecordByCourse(Long courseId);
 
     void addLearningRecord(LearningRecordFormDTO recordDto);
+
+    List<LearningRecordDTO> queryLearningRecordsByUser(Long userId);
 }

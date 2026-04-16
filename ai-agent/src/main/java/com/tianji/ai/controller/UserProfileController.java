@@ -56,9 +56,23 @@ public class UserProfileController {
         profile.setUserId(userId);
         
         try {
-            // 由于LearningClient没有提供获取用户所有学习记录的方法，暂时使用默认用户画像
-            // 后续可以集成其他服务获取用户的学习记录
-            profile = generateDefaultUserProfile(userId);
+            // 从学习服务获取用户的学习记录
+            List<LearningRecordDTO> records = learningClient.queryLearningRecordsByUser(userId);
+            
+            if (records != null && !records.isEmpty()) {
+                // 根据学习记录生成学习历史
+                String learningHistory = generateLearningHistory(records);
+                profile.setLearningHistory(learningHistory);
+                
+                // 生成兴趣标签
+                profile.setInterestTags(generateInterestTags(learningHistory));
+                
+                // 生成学习目标
+                profile.setLearningGoal(generateLearningGoal(learningHistory));
+            } else {
+                // 如果没有学习记录，使用默认用户画像
+                profile = generateDefaultUserProfile(userId);
+            }
         } catch (Exception e) {
             // 如果调用服务失败，使用默认用户画像
             e.printStackTrace();
@@ -66,6 +80,28 @@ public class UserProfileController {
         }
         
         return profile;
+    }
+    
+    /**
+     * 根据学习记录生成学习历史
+     * @param records 学习记录列表
+     * @return 学习历史字符串
+     */
+    private String generateLearningHistory(List<LearningRecordDTO> records) {
+        StringBuilder history = new StringBuilder();
+        for (LearningRecordDTO record : records) {
+            // 这里可以根据实际情况从课程服务获取课程信息，暂时使用sectionId作为标识
+            history.append("课程小节ID: " + record.getSectionId());
+            if (record.getFinished()) {
+                history.append(" (已完成)");
+            }
+            history.append(", ");
+        }
+        // 移除最后的逗号和空格
+        if (history.length() > 2) {
+            history.setLength(history.length() - 2);
+        }
+        return history.toString();
     }
     
     /**

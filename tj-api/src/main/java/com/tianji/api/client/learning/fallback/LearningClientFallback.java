@@ -2,8 +2,12 @@ package com.tianji.api.client.learning.fallback;
 
 import com.tianji.api.client.learning.LearningClient;
 import com.tianji.api.dto.leanring.LearningLessonDTO;
+import com.tianji.api.dto.leanring.LearningRecordDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
+
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 public class LearningClientFallback implements FallbackFactory<LearningClient> {
@@ -25,6 +29,11 @@ public class LearningClientFallback implements FallbackFactory<LearningClient> {
             @Override
             public LearningLessonDTO queryLearningRecordByCourse(Long courseId) {
                 return null;
+            }
+
+            @Override
+            public List<LearningRecordDTO> queryLearningRecordsByUser(Long userId) {
+                return Collections.emptyList();
             }
         };
     }
