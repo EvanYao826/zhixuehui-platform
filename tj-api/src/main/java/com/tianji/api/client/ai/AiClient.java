@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "ai-agent", fallback = AiClientFallback.class)
+@FeignClient(value = "ai-agent", contextId = "aiClient", fallback = AiClientFallback.class)
 public interface AiClient {
 
     @PostMapping("/ai/course/recommendation")

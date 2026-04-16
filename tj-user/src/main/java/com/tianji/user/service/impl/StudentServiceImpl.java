@@ -2,8 +2,10 @@ package com.tianji.user.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tianji.api.client.ai.AiClient;
+import com.tianji.api.client.ai.UserProfileClient;
 import com.tianji.api.client.trade.TradeClient;
 import com.tianji.api.dto.ai.CourseRecommendationDTO;
+import com.tianji.api.dto.ai.UserProfileDTO;
 import com.tianji.common.domain.R;
 import com.tianji.common.domain.dto.PageDTO;
 import com.tianji.common.enums.UserType;
@@ -24,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,6 +48,7 @@ public class StudentServiceImpl implements IStudentService {
     private final IUserDetailService detailService;
     private final TradeClient tradeClient;
     private final AiClient aiClient;
+    private final UserProfileClient userProfileClient;
 
     @Override
     @Transactional
@@ -95,14 +100,17 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public Object getUserProfile(Long userId) {
-        // 模拟获取用户画像，实际应该从ai_user_profile表查询
-        // 这里暂时返回模拟数据
-        Map<String, Object> profile = new java.util.HashMap<>();
-        profile.put("userId", userId);
-        profile.put("learningHistory", List.of("Java基础", "Spring Boot", "数据库原理"));
-        profile.put("interestTags", List.of("编程", "后端开发", "云计算"));
-        profile.put("learningGoal", "成为全栈工程师");
-        return profile;
+        // 调用AI服务获取用户画像
+        R<UserProfileDTO> result = userProfileClient.getUserProfile(userId);
+        UserProfileDTO profile = result.getData();
+        
+        // 转换为返回格式
+        Map<String, Object> response = new HashMap<>();
+        response.put("userId", profile.getUserId());
+        response.put("learningHistory", Arrays.asList(profile.getLearningHistory().split(",")));
+        response.put("interestTags", Arrays.asList(profile.getInterestTags().split(",")));
+        response.put("learningGoal", profile.getLearningGoal());
+        return response;
     }
 
     @Override

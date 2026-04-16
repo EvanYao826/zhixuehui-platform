@@ -70,6 +70,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
+        <!--ai-agent模块-->
+        <dependency>
+            <groupId>com.tianji</groupId>
+            <artifactId>ai-agent</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>
