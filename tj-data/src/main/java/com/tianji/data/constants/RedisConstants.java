@@ -13,4 +13,8 @@ public class RedisConstants {
     public static final String KEY_TOP10 = "DATA:TOP10:";
 
     public static final String KEY_TODAY = "DATA:TODAY:";
+
+    public static final String KEY_DAILY_REPORT = "DATA:REPORT:DAILY:";
+
+    public static final String KEY_WEEKLY_REPORT = "DATA:REPORT:WEEKLY:";
 }
